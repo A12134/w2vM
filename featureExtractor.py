@@ -1,5 +1,6 @@
 import re
 
+
 class extractor:
     def __init__(self):
         pass
@@ -12,7 +13,7 @@ class extractor:
     def mentionWordRatio(self, line):
         l = re.findall(r"(?<![R|r][T|t]\s)@handle", line)
         w = self.totalWord(line)
-        return l.__len__()/w
+        return l.__len__() / w
 
     def totalWord(self, line):
         return line.split(" ").__len__()
@@ -24,13 +25,13 @@ class extractor:
     def hashtagWordRatio(self, line):
         l = re.findall(r"(?<!&)#", line)
         w = self.totalWord(line)
-        return l.__len__()/w
+        return l.__len__() / w
 
     def numOfMoney(self, line):
         l = re.findall(r"\$[1-9][0-9]*", line)
         return l.__len__()
 
-    def lineToVector(self,line):
+    def lineToVector(self, line):
         return [
             self.isRetweet(line),
             self.mentionWordRatio(line),
@@ -45,7 +46,6 @@ class extractor:
             s += str(x) + ','
         s = s[:-1]
         return s
-
 
     def batchToVector(self, d, usr_flag, save=False, file_name="data"):
         print("convert raw data to vector.....")
