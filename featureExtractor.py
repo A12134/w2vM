@@ -35,7 +35,6 @@ class extractor:
             self.isRetweet(line),
             self.mentionWordRatio(line),
             self.totalWord(line),
-            self.numOfURL(line),
             self.hashtagWordRatio(line),
             self.numOfMoney(line)
         ]
