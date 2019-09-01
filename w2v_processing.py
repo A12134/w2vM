@@ -6,7 +6,7 @@ from fileReader import trainData
 import operator
 import re
 import math
-
+import numpy as np
 
 class w2vAndGramsConverter:
 
@@ -17,6 +17,8 @@ class w2vAndGramsConverter:
         self.five_gram_list = []
         self.dictionary = dict()
         self.lines = []
+        self.indexTracking = 0
+        self.batchFlag = False
 
     def normalizeSentence(self, line):
         # remove newline
@@ -132,9 +134,53 @@ class w2vAndGramsConverter:
 
         return od
 
-c = w2vAndGramsConverter()
-train = trainData()
-label, data = train.getLabelsAndrawData()
-train.unloadData()
-c.removeHighAndLowFrequencyWords(data)
-c.trainW2V()
+    def convertDataToVec(self, data, labels, batchSize=5000):
+        if data.__len__() - self.indexTracking < batchSize:
+            batchSize = data.__len__() - self.indexTracking
+            self.batchFlag = True
+
+        clf = Word2Vec.load("w2v.model")
+        d = np.array([])
+        counts = 0
+        for line in data[self.indexTracking:]:
+            if counts == batchSize:
+                break
+            counts += 1
+            tmp = np.array([0]*300)
+            tk = TweetTokenizer()
+            l = tk.tokenize(self.normalizeSentence(line))
+            count = 0
+            for w in l:
+                count += 1
+                try:
+                    s = clf.wv.get_vector(w)
+                    s = np.array(s)
+                    tmp = np.add(tmp, s)
+                except:
+                    continue
+
+            tmp = tmp/count
+            d = np.concatenate((d, tmp))
+
+        l = self.convertLabelToVec(labels, batchSize)
+        self.indexTracking += batchSize
+
+        return l, d
+
+    def convertLabelToVec(self, labels, batchSize=5000):
+        d = np.array([])
+        count = 0
+        for s in labels[self.indexTracking:]:
+            if count == batchSize:
+                break
+            count += 1
+
+            tmp = [0]*10000
+            try:
+                tmp[int(s)] = 1
+            except:
+                print("break")
+            d = np.concatenate((d, tmp))
+        return d
+
+

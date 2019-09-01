@@ -4,7 +4,7 @@ from sklearn import svm
 import pickle
 
 # create trainingData and feature extractor
-train = trainData()
+train = trainData(threshold=10)
 e = extractor()
 
 # read training data
