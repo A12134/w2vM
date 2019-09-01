@@ -6,6 +6,7 @@ from nltk import TweetTokenizer
 import emot
 from w2v_processing import w2vAndGramsConverter
 
+
 class extractor:
     def __init__(self):
         pass
@@ -83,6 +84,7 @@ class extractor:
                     d_arr.append(self.lineToVector(l))
 
                 return d_arr
+
     """
     ===============================
             Binary/n Features
@@ -128,7 +130,6 @@ class extractor:
     def getURLFeature(self, line):
         return self.numOfURL(line)
 
-
     def isRT(self, line):
         return self.isRetweet(line)
 
@@ -164,7 +165,6 @@ class extractor:
         if re.search(r"\s[0-9]*\s", line):
             return 1
         return 0
-
 
     def hasMention(self, line):
         return re.findall(r"(?<![R|r][T|t]\s)@handle", line).__len__()
@@ -211,17 +211,13 @@ class extractor:
         print("transfer complete!")
         return retArr
 
-
     # 0: no capital of word
     # 1: 50% of words are start with Capital
     def COWvalue(self, line):
         l = re.findall(r'[A-Z][a-z]+', line)
         w = re.findall(r'[a-zA-Z]+\s', line)
-        v = l.__len__()/w.__len__()
+        v = l.__len__() / w.__len__()
         if v > 0.5:
             return 1
         else:
             return 0
-
-
-
