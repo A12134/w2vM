@@ -48,6 +48,6 @@ termcolor==1.1.0
 tf-estimator-nightly==1.14.0.dev2019060501
 torch==1.2.0+cu92
 torchvision==0.4.0+cu92
-urllib3==1.25.3
+urllib3==1.26.5
 Werkzeug==0.15.5
 wrapt==1.11.2
